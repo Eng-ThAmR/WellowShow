@@ -86,9 +86,6 @@
     background:rgba(48,164,108,.15); color:var(--ok); border:1px solid rgba(48,164,108,.3);
     display:flex; align-items:center; gap:5px; cursor:pointer;
   }
-  .server-badge.offline {
-    background:rgba(245,197,24,.15); color:var(--accent); border-color:rgba(245,197,24,.3);
-  }
   .server-badge .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
 
   /* Search Wrap */
@@ -705,7 +702,7 @@
 
   <div class="nav-right">
     <!-- Server Status Indicator -->
-    <div class="server-badge" id="serverBadge" title="Server Connection Status" onclick="checkBackendHealth(true)">
+    <div class="server-badge" id="serverBadge" title="Server Connection Status" style="display:none" onclick="checkBackendHealth(true)">
       <div class="dot"></div>
       <span id="serverStatusText">Detecting...</span>
     </div>
@@ -1053,7 +1050,7 @@ const I18N = {
     importJson: "Import JSON", resetCatalog: "Reset Catalog", totalTitles: "Total Titles",
     avgRating: "Avg Rating", genresCount: "Genres", markedNew: "Marked NEW", topRatedTitle: "Top Rated",
     saveTitle: "Save Title", saveChanges: "Save Changes", editTitle: "Edit Title",
-    langBtnText: "🌐 عربي", offlineMode: "💾 Local Mode", pyApiMode: "🟢 Python API", phpApiMode: "🟢 PHP API",
+    langBtnText: "🌐 عربي", pyApiMode: "🟢 Python API", phpApiMode: "🟢 PHP API",
     pwdNavBtnText: "Password", pwdSectionTitle: "Manager Dashboard Password",
     pwdSectionDesc: "Update the passcode required to unlock manager privileges and edit content.",
     lblCurrentPass: "Current Passcode *", lblNewPass: "New Passcode *", lblConfirmPass: "Confirm New Passcode *",
@@ -1074,7 +1071,7 @@ const I18N = {
     importJson: "استيراد البيانات", resetCatalog: "استعادة الافتراضي", totalTitles: "إجمالي العناوين",
     avgRating: "متوسط التقييم", genresCount: "التصنيفات", markedNew: "العناوين الجديدة", topRatedTitle: "الأعلى تقييماً",
     saveTitle: "حفظ العنوان", saveChanges: "حفظ التعديلات", editTitle: "تعديل العنوان",
-    langBtnText: "🌐 English", offlineMode: "💾 الوضع المحلي", pyApiMode: "🟢 خادم بايثون", phpApiMode: "🟢 خادم PHP",
+    langBtnText: "🌐 English", pyApiMode: "🟢 خادم بايثون", phpApiMode: "🟢 خادم PHP",
     pwdNavBtnText: "كلمة المرور", pwdSectionTitle: "كلمة مرور لوحة تحكم المدير",
     pwdSectionDesc: "تحديث الرمز السري المطلوب للوصول لصلاحيات المدير وتعديل المحتوى.",
     lblCurrentPass: "كلمة المرور الحالية *", lblNewPass: "كلمة المرور الجديدة *", lblConfirmPass: "تأكيد كلمة المرور الجديدة *",
@@ -1155,6 +1152,7 @@ async function checkBackendHealth(showNotice = false) {
       const data = await resPy.json();
       backendMode = 'python';
       badge.className = 'server-badge';
+      badge.style.display = 'flex';
       txt.textContent = t('pyApiMode');
       if (showNotice) alert('Connected to Python SQLite REST API backend!');
       return;
@@ -1168,17 +1166,17 @@ async function checkBackendHealth(showNotice = false) {
       const data = await resPhp.json();
       backendMode = 'php';
       badge.className = 'server-badge';
+      badge.style.display = 'flex';
       txt.textContent = t('phpApiMode');
       if (showNotice) alert('Connected to PHP REST API backend!');
       return;
     }
   } catch (e) {}
 
-  // 3. Fallback to Standalone LocalStorage / IndexedDB
+  // 3. Fall back to local storage without showing a mode badge.
   backendMode = 'offline';
-  badge.className = 'server-badge offline';
-  txt.textContent = t('offlineMode');
-  if (showNotice) alert('Running in standalone client mode (LocalStorage & IndexedDB active).');
+  badge.style.display = 'none';
+  if (showNotice) alert('No server backend is available.');
 }
 
 // ---------------- INDEXED DB (FOR LOCAL FILE UPLOADS) ----------------
