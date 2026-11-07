@@ -1,95 +1,24 @@
-# 🎬 WellowShow — Full-Stack Cinematic Streaming Platform
-### منصة بث الأفلام والمسلسلات المتكاملة (HTML, CSS, JavaScript, PHP, Python)
+# WellowNet Portfolio — Full Stack
 
----
+## Features
+- Responsive glassmorphism portfolio.
+- Top admin toolbar with password login and image upload.
+- Multi-image upload (up to 20 at a time; 12 MB each).
+- Server-side image storage; gallery is visible to all visitors.
+- Admin-only image deletion.
 
-## 🌟 نظرة عامة | Overview
-**WellowShow** هي منصة ترفيهية سينمائية متكاملة مصممة بأعلى معايير الويب الحديثة (Cinematic Glassmorphism Dark Mode)، تدعم العمل بثلاثة أوضاع مختلفة وبنفس قاعدة البيانات والواجهة:
-1. **الوضع المحلي (Standalone / Client-Only)**: يعمل بمجرد فتح ملف `index.html` في أي متصفح بالاعتماد على `LocalStorage` و `IndexedDB` دون الحاجة لأي خادم.
-2. **وضع بايثون (Python 3 REST API + SQLite)**: خادم متكامل وسريع بدون مكتبات خارجية (`server.py`) يوفر واجهة برمجية RESTful كاملة، ويدعم تقنية **HTTP Byte-Range** لتقديم وتأخير الفيديو بسلاسة فائقة.
-3. **وضع بي إتش بي (PHP 7.4 / 8.x + SQLite)**: واجهة برمجية كاملة (`api.php` و `index.php`) جاهزة للتشغيل على استضافات الويب وسيرفرات XAMPP / WAMP / Apache.
+## Run locally
+1. Install Node.js 18 or newer.
+2. Optional: copy `.env.example` to `.env`. The default admin password is `admin123`.
+3. Run `npm install`.
+4. Run `npm start`.
+5. Open `http://localhost:3000`.
+6. On the site (not by opening `public/index.html` directly), go to **My Work Gallery** and select **Admin login**.
+7. Enter the admin password, choose **Upload photos**, and select up to 20 JPEG, PNG, WebP, GIF, or AVIF images (maximum 12 MB each). Uploaded photos are saved on the server and shown to every visitor.
 
----
+Set a private `ADMIN_PASSWORD` in `.env` before deployment. The built-in `admin123` password is for local development only and should not be used on a public site.
 
-## 🚀 طرق التشغيل | How to Run
+## Deployment
+Deploy on a VPS or hosting service with persistent disk storage. The `uploads/` and `data/` folders must persist across restarts/deployments. This simple disk-storage version is not suitable for serverless platforms or ephemeral filesystems such as a default Vercel deployment. For Vercel, replace local upload storage with S3, Cloudinary, or Supabase Storage and use a database for gallery metadata.
 
-### 1️⃣ التشغيل عبر خادم بايثون (الأسهل والأقوى)
-الخادم مبني بالكامل على مكتبات بايثون الأساسية (Zero External Dependencies):
-```bash
-python server.py
-```
-ثم افتح المتصفح على:
-👉 **`http://localhost:8000`**
-
----
-
-### 2️⃣ التشغيل عبر خادم PHP
-إذا كنت تستخدم سيرفر محلي (XAMPP / WAMP / Laragon) أو خادم PHP المدمج:
-```bash
-php -S localhost:8000
-```
-ثم افتح المتصفح على:
-👉 **`http://localhost:8000`**
-
----
-
-### 3️⃣ التشغيل المباشر بدون خادم (Standalone)
-فقط انقر مرتين بالفأرة على ملف:
-👉 **`index.html`** أو **`wellowshow_updated.html`**
-
----
-
-## 💎 الميزات والتحسينات المنجزة | Features & Enhancements
-
-### 🎨 الواجهة والتصميم (HTML5 & CSS3):
-- **تصميم سينمائي مذهل (Dark Cinematic Glassmorphism)**: تدرجات لونية عصرية، تأثيرات توهج نيون، وبطاقات عائمة ثلاثية الأبعاد.
-- **دعم ثنائي اللغة كامل مع RTL (عربي / English)**: زر تبديل فوري يحول كامل النصوص والاتجاهات من اليمين لليسار مع حفظ التفضيل.
-- **شريط تنقل سفلي للهواتف الذكية (Mobile Bottom Nav)**: تجربة مستخدم تشبه تطبيقات الهاتف (Netflix / Prime Video).
-- **أيقونة Favicon مدمجة (SVG)**: تمنع أخطاء 404 وتضفي هوية بصرية أنيقة.
-
-### 🎥 مشغل الفيديو والبث (JavaScript ES6+):
-- **دعم كافة صيغ الفيديو**:
-  - فيديوهات يوتيوب (Embedded YouTube Trailers).
-  - ملفات الفيديو المباشرة (`.mp4`, `.webm`, `.ogg`).
-  - عينات أفلام مجانية بدقة 4K (Big Buck Bunny, Sintel, Tears of Steel).
-  - ملفات الفيديو المحلية عبر الرفع.
-- **إصلاح جذري لمشكلة تسريب الصوت**: إيقاف تشغيل الفيديو والصوت فور إغلاق نافذة المشغل نهائياً.
-- **شريط تحكم متقدم**:
-  - تقديم وتأخير 10 ثوانٍ مع أزرار اختصار لوحة المفاتيح (الأسهم ◀ ▶).
-  - شريط مسار تفاعلي للنقر والسحب (Seek Scrubbing).
-  - التحكم في مستوى الصوت والكتم بنقرة واحدة.
-  - خيارات سرعة التشغيل (0.75x, 1x, 1.25x, 1.5x, 2x).
-  - وضع ملء الشاشة (Fullscreen).
-
-### ⚙️ لوحة تحكم المحتوى (Admin Dashboard):
-- **إدارة كاملة (CRUD)**: إضافة، تعديل، وحذف الأفلام والمسلسلات.
-- **إحصائيات حية**: إجمالي العناوين، متوسط التقييم، عدد التصنيفات، العناوين المميزة.
-- **النسخ الاحتياطي والاستعادة**:
-  - `📥 Export JSON`: تصدير قاعدة البيانات بنقرة زر.
-  - `📤 Import JSON`: استيراد قاعدة بيانات جاهزة.
-  - `🔄 Reset Catalog`: استعادة العناوين الافتراضية.
-- **تكامل RapidAPI / IMDb**: جلب أسماء الممثلين الحقيقيين تلقائياً عبر المعرف `tt...`.
-
-### 🛡️ الصلاحيات والأمان (Authentication & Security):
-- التبديل بين وضع المشاهد (User) ووضع المدير (Manager).
-- قسم مخصص في لوحة التحكم لتغيير كلمة مرور المدير وتأكيدها، وإظهار/إخفاء الرمز بنقرة زر (👁️)، وإمكانية استعادة الرمز الافتراضي (`admin123`).
-- مزامنة فورية لتحديث كلمة المرور محلياً وعبر واجهات البرمجة (Python API و PHP Backend).
-
----
-
-## 📁 بنية المشروع | Project Structure
-```
-Moveis/
-├── index.html                 # واجهة المستخدم الرئيسية المكتملة
-├── wellowshow_updated.html    # نسخة متطابقة ومحدثة بالكامل
-├── server.py                  # خادم بايثون 3 REST API + Range Streaming
-├── api.php                    # واجهة برمجة تطبيقات PHP REST API + SQLite
-├── index.php                  # نقطة دخول PHP لمخدمات أباتشي وXAMPP
-├── wellowshow.db              # قاعدة بيانات SQLite المشتركة
-├── uploads/                   # مجلد رفع البوسترات وملفات الفيديو
-├── assets/                    # مجلد الأصول الثابتة
-└── README.md                  # دليل الاستخدام والتوثيق
-```
-
----
-✨ **تم إنجاز المشروع وتدقيقه بشكل نهائي وشامل.**
+Default admin password: `admin123`. Change it before exposing the site publicly by setting a strong `ADMIN_PASSWORD` in `.env` or your hosting environment. Use HTTPS in production; never commit `.env`.
