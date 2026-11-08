@@ -1,24 +1,28 @@
-# WellowNet Portfolio — Full Stack
+# WellowNet portfolio
 
-## Features
-- Responsive glassmorphism portfolio.
-- Top admin toolbar with password login and image upload.
-- Multi-image upload (up to 20 at a time; 12 MB each).
-- Server-side image storage; gallery is visible to all visitors.
-- Admin-only image deletion.
+## Requirements
+
+- Node.js 18 or newer
+- npm
+- Writable persistent storage for `data/` and `uploads/`
 
 ## Run locally
-1. Install Node.js 18 or newer.
-2. Optional: copy `.env.example` to `.env`. The default admin password is `admin123`.
-3. Run `npm install`.
-4. Run `npm start`.
-5. Open `http://localhost:3000`.
-6. On the site (not by opening `public/index.html` directly), go to **My Work Gallery** and select **Admin login**.
-7. Enter the admin password, choose **Upload photos**, and select up to 20 JPEG, PNG, WebP, GIF, or AVIF images (maximum 12 MB each). Uploaded photos are saved on the server and shown to every visitor.
 
-Set a private `ADMIN_PASSWORD` in `.env` before deployment. The built-in `admin123` password is for local development only and should not be used on a public site.
+```powershell
+Copy-Item .env.example .env
+```
 
-## Deployment
-Deploy on a VPS or hosting service with persistent disk storage. The `uploads/` and `data/` folders must persist across restarts/deployments. This simple disk-storage version is not suitable for serverless platforms or ephemeral filesystems such as a default Vercel deployment. For Vercel, replace local upload storage with S3, Cloudinary, or Supabase Storage and use a database for gallery metadata.
+Set `ADMIN_PASSWORD` in `.env` to a unique password with at least 12 characters, then run:
 
-Default admin password: `admin123`. Change it before exposing the site publicly by setting a strong `ADMIN_PASSWORD` in `.env` or your hosting environment. Use HTTPS in production; never commit `.env`.
+```powershell
+npm ci
+npm start
+```
+
+Open `http://localhost:3000`. The password is saved to `data/admin-password.txt` on first startup and can be changed through the gallery admin controls. Keep `.env` and `data/admin-password.txt` private.
+
+## Deployment notes
+
+Set `ADMIN_PASSWORD` in the hosting provider's environment settings for the first deployment. Keep `data/` and `uploads/` on persistent storage: the gallery index, admin password, and uploaded images are stored there. Copy the existing `data/gallery.json` and referenced upload images when migrating the current gallery.
+
+This app stores sessions and gallery data locally, so deploy it as a single application instance with persistent disk. Use HTTPS at the hosting provider or reverse proxy. The `/health` endpoint can be used for a health check.
